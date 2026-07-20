@@ -11,3 +11,6 @@ __pycache__/
 # Ambientes / editores
 .vscode/
 .DS_Store
+
+# Ambiente Virtual criado
+venv/

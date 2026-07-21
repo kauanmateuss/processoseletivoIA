@@ -29,7 +29,6 @@ converter.optimizations = [tf.lite.Optimize.DEFAULT]
 tflite_model = converter.convert()
 
 # salvando o modelo otimizado na pasta do projeto
-script_dir = os.path.dirname(os.path.abspath(__file__))
-os.makedirs(script_dir, exist_ok=True)
+os.makedirs(script_dir, exist_ok=True) # garantindo que a pasta vai existir
 tflite_path = os.path.join(script_dir, "model.tflite")
-open(tflite_path, 'wb').write(tflite_model)
+open(tflite_path, 'wb').write(tflite_model) # salvando o modelo otimizado

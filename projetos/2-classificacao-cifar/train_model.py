@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split # para separar o conjunto de validação
 
 
 # ---------------------------------------------------------------------------
@@ -37,23 +37,16 @@ x_test = x_test.astype("float32") / 255.0
 x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, stratify=y_train, test_size=0.2)
 
 
-# data augmentation para conjunto de treino
-data_augmentation = tf.keras.Sequential([
-    layers.RandomFlip("horizontal"),   # vira as imagens horizontalmente
-    layers.RandomRotation(0.1),     # rotaciona as imagens em até 10%
-    layers.RandomZoom(0.1),     # aplica zoom aleatorio nas imagens em até 10%
-    layers.RandomTranslation(height_factor=0.1, width_factor=0.1),  # aplicando translação aleatoria 
-    layers.RandomContrast(0.1)  # aplicando contraste aleatorio
-], name="data_augmentation")
-
-
 # Construindo a CNN
 model = keras.Sequential()
-
 model.add(layers.Input(shape=(32, 32, 3)))  # camada de entrada com shape (32, 32, 3)
 
 # aplicando data augmentation
-model.add(data_augmentation)
+model.add(layers.RandomFlip("horizontal"))   # vira as imagens horizontalmente
+model.add(layers.RandomRotation(0.1))     # rotaciona as imagens em até 10%
+model.add(layers.RandomZoom(0.1))     # aplica zoom aleatorio nas imagens em até 10%
+model.add(layers.RandomTranslation(height_factor=0.1, width_factor=0.1))  # aplicando translação aleatoria 
+model.add(layers.RandomContrast(0.1))  # aplicando contraste aleatorio
 
 # bloco 1
 model.add(layers.Conv2D(32, kernel_size=(3, 3), activation="relu", padding="same"))
@@ -76,7 +69,7 @@ model.add(layers.Conv2D(128, kernel_size=(3, 3), activation="relu", padding="sam
 model.add(layers.BatchNormalization())
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-
+# bloco de regularização
 model.add(layers.Flatten()) # Transforma em vetor unidimensional
 model.add(layers.Dense(256, activation="relu"))
 model.add(layers.Dropout(0.5))  # Regularização com Dropout de 50%
@@ -97,7 +90,7 @@ history = model.fit(
     x=x_train, 
     y=y_train,
     validation_data=(x_val, y_val),
-    epochs=1,
+    epochs=30,
     batch_size=32,
     shuffle=True,
     callbacks=[early_stopping]

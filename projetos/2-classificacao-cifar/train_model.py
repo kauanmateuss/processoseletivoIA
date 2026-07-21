@@ -1,7 +1,4 @@
 import os
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # desabilita GPU para evitar problemas de compatibilidade
-
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -86,7 +83,7 @@ model.add(layers.Dropout(0.5))  # Regularização com Dropout de 50%
 model.add(layers.Dense(10, activation="softmax")) # camada de saida
 
 # Fazendo a compilação do modelo
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
 # Mostrando o resumo do modelo que definimos
 model.summary()
@@ -100,8 +97,8 @@ history = model.fit(
     x=x_train, 
     y=y_train,
     validation_data=(x_val, y_val),
-    epochs=3,
-    batch_size=16,
+    epochs=30,
+    batch_size=32,
     shuffle=True,
     callbacks=[early_stopping]
 )

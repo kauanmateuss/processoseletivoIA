@@ -15,7 +15,9 @@ import os
 # insira seu código aqui
 
 # carregando o modelo que treinamos
-model = tf.keras.models.load_model("model.h5")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+h5_path = os.path.join(script_dir, "model.h5")
+model = tf.keras.models.load_model(h5_path)
 
 # convertendo o modelo para tensorflow lite
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -26,5 +28,8 @@ converter.optimizations = [tf.lite.Optimize.DEFAULT]
 # convertendo o modelo 
 tflite_model = converter.convert()
 
-# salvando o modelo otimizado
-open('model.tflite', 'wb').write(tflite_model)
+# salvando o modelo otimizado na pasta do projeto
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.makedirs(script_dir, exist_ok=True)
+tflite_path = os.path.join(script_dir, "model.tflite")
+open(tflite_path, 'wb').write(tflite_model)

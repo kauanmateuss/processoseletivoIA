@@ -7,6 +7,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
 
+
 # ---------------------------------------------------------------------------
 # Projeto 2 — Classificação CIFAR-10
 #
@@ -99,7 +100,7 @@ history = model.fit(
     x=x_train, 
     y=y_train,
     validation_data=(x_val, y_val),
-    epochs=30,
+    epochs=3,
     batch_size=16,
     shuffle=True,
     callbacks=[early_stopping]
@@ -109,5 +110,12 @@ history = model.fit(
 val_loss, val_accuracy = model.evaluate(x_val, y_val, verbose=0)
 print(f"Acurácia de validação final: {val_accuracy:.4f}")
 
-# salvando o modelo treinado como "model.h5"
-model.save("model.h5")
+# caminho para salvar o modelo treinado
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+os.makedirs(script_dir, exist_ok=True)  # cria a pasta se não existir
+
+h5_path = os.path.join(script_dir, "model.h5")
+
+# salvando o modelo treinado como "model.h5" na pasta atual
+model.save(h5_path)

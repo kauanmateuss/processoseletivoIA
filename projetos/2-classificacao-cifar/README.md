@@ -96,7 +96,7 @@ projetos/2-classificacao-cifar/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:**
+👤 **Nome Completo:** Kauan Mateus Vidal de Brito
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 

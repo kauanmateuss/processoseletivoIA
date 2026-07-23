@@ -82,16 +82,16 @@ model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="sparse
 model.summary()
 
 # Definindo o callback de EarlyStopping para monitorar a perda
-# Vai parar se a perda não melhorar por 10 epocas e vai restaurar os pesos do melhor modelo
-early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True, verbose=1)
+# Vai parar se a perda não melhorar por 5 epocas e vai restaurar os pesos do melhor modelo
+early_stopping = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True, verbose=1)
 
 # Fazendo o treinamento do modelo
 history = model.fit(
     x=x_train, 
     y=y_train,
     validation_data=(x_val, y_val),
-    epochs=30,
-    batch_size=32,
+    epochs=40,
+    batch_size=64,
     shuffle=True,
     callbacks=[early_stopping]
 )

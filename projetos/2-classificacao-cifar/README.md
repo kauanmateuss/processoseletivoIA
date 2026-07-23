@@ -102,6 +102,19 @@ projetos/2-classificacao-cifar/
 
 Descreva a arquitetura da CNN implementada em `train_model.py` e a estratégia de data augmentation utilizada.
 
+A construção deste modelo foi um processo iterativo. Inicialmente, realizei testes/treinamento com uma rede
+simples(como utilizando apenas uma camada Conv2D) e diferente hiperparâmetros(como batchsize = 10, 16; learnig rate = 0,003, 0,001 e menos aumentação de dados). Após os treinamentos e analise de métricas importantes como perda e acurácia, pude notar que o modelo ficava apenas na casa dos 60% de acurácia, onde podia ser que o modelo tivesse com baixa capacidade de extração de características.
+
+Com o intuito de atingir pelo menos 80% de acurácia, optei construir uma rede não muito complexa que conta com 3-4 blocos(como foi sugerido nos requisitos do projeto), onde cada bloco possui duas camadas Conv2D e duas camadas de BatchNormalization. A configuração final consistem em:
+
+  - **Data Augmentation:** Integrada diretamente no modelo sequencial, aplicando transformações como: Inversão horizontal (RandomFlip), Rotação de 10% (RandomRotation), Zoom de 10% (RandomZoom), Translação (RandomTranslation) e Contraste (RandomContrast).
+
+  - **Extração de Características (CNN):** 3 blocos profundos. Cada bloco possui 2 camadas Conv2D (com padding="same" para preservar as bordas), seguidas por camadas de BatchNormalization (para acelerar a convergência e estabilizar o treino) e finalizadas com MaxPooling2D para redução de dimensionalidade. Os filtros aumentam progressivamente (32 -> 64 -> 128).
+
+  - **Classificador Final:** Uma camada Flatten seguida por uma camada oculta Dense interpretadora de 256 neurônios. Em seguida, um Dropout agressivo de 50% garante a generalização, e a saída ocorre por uma camada Dense de 10 neurônios com ativação Softmax.
+
+Foi utilizado 
+
 ### 2️⃣ Bibliotecas Utilizadas
 
 Liste as principais bibliotecas utilizadas, preferencialmente com suas versões.
